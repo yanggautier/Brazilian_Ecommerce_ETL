@@ -128,10 +128,10 @@ commit;
 ## 4. DBT Section
 Build your own models in `./models` and then run `docker-compose exec dbt dbt run` to create table ou views
 
-# 5. Orchestration Dagster
+## 5. Orchestration Dagster
 Dagster is orchestration tool that can integrate with DBT, here I just have a easy example to run and test command with DBT
 
-## 5. Superset
+## 6. Superset
 If you've build your models, you can move to `./superset` folder, fill out the `.env` and run `docker-compose up`
 
 1. Create a connection with Snowflake and fill all the information of your configuration Snowflake
