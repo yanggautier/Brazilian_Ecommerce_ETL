@@ -6,11 +6,10 @@
 
 ## Data source
 
-
-Source files: https://www.kaggle.com/datasets/burayamail/brazilian-ecommerce-analyses-v2/data
+Test source files: https://www.kaggle.com/datasets/burayamail/brazilian-ecommerce-analyses-v2/data, you can use your own files, because this dataset has many problems: such as order_id incorrect in the order_times csv, etc ...
 
 ## Architecture du système
-Collecte (Dagster)  ----> Snowflake (Stockage)  ---->  dbt (Transform) ----> Superset (BI/Viz) 
+GCS(CSV files) ----> Cloud SQL PostgreSQL ----> in Collecte (Dagster)  ----> Snowflake (Stockage)  ---->  dbt (Transform) ----> Superset (BI/Viz) 
 
 
 ## 1. Simulate a Cloud SQL PostgreSQL
@@ -28,7 +27,14 @@ Collecte (Dagster)  ----> Snowflake (Stockage)  ---->  dbt (Transform) ----> Sup
 **Note**: If you don't want use a cloud based sql server for the source you can place csv files n the `seed`folder then use `dbt seed` command to populate tables
 
 
-## 2. Configuration Airbyte for data transfer
+
+## 2. Output configurations ()
+1. Create or use an existing account Snowflake
+2. Create an Warehouse 
+3. Create a database for this project
+4. Update the section Snowflake in `.env` file (get account-indenfitifer in Account -> View account details )
+
+## 3. Configuration Airbyte for data transfer
 
 1. Create readonly user for Airbyte in database
 ```sql
@@ -42,6 +48,8 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA <schema_name> GRANT SELECT ON TABLES TO <user
 2. Add a network with your IP address in the `Authorized networks` section
 3. Go to `./airbyte` create a source connection, then search for PostgreSQL, fill out the IP, port, username, password. And chose SSL Modes with require and Detect Changes with Xmin System Column in Advanced secrtion `then Test and Save`.
 4. Create a destination `Snowflake` connector, you can use this request to create role, user, database, warehouse and permissions
+
+
 ```SQL
 -- set variables (these need to be uppercase)
 set airbyte_role = 'AIRBYTE_ROLE';
@@ -116,9 +124,21 @@ commit;
 
 ![Airbyte sync](images/airbyte.png)
 
-## Output configurations 
-1. Create or use an existing account Snowflake
-2. Create an Warehouse 
-3. Create a database for this project
-4. Update the section Snowflake in `.env` file (get account-indenfitifer in Account -> View account details )
 
+## 4. DBT Section
+Build your own models in `./models` and then run `docker-compose exec dbt dbt run` to create table ou views
+
+# 5. Orchestration Dagster
+Dagster is orchestration tool that can integrate with DBT, here I just have a easy example to run and test command with DBT
+
+## 5. Superset
+If you've build your models, you can move to `./superset` folder, fill out the `.env` and run `docker-compose up`
+
+1. Create a connection with Snowflake and fill all the information of your configuration Snowflake
+2. Create a Dataset with DATABASE, SCHEMA and TABLE
+3. Create a new chart
+
+This is an example you can get in Superset 
+![Total_value_sold_in_state](images/superset.png)
+
+4. You can also create a dashboard and share it with your team members
