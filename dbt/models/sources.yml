@@ -1,48 +1,32 @@
 sources:
-  - name: cloud_sql_postgresql
+  - name: raw_data
     description: "Source data from Cloud SQL PostgreSQL"
-    schema: public
-    meta:
-      external_location: "postgresql://{{ env_var('CLOUDSQL_USER') }}:{{ env_var('CLOUDSQL_PASSWORD') }}@{{ env_var('CLOUDSQL_HOST') }}:{{ env_var('CLOUDSQL_PORT') }}/{{ env_var('CLOUDSQL_DATABASE') }}"
+    schema: airbyte_schema
+    database: airbyte_database
     tables:
       - name: orders
         description: "Orders table"
-        external:
-          location: "SELECT * FROM public.orders"
-          options:
-            format: 'POSTGRESQL'
-            
+          
       - name: order_items
         description: "Order items table"
-        external:
-          location: "SELECT * FROM public.order_items"
-          options:
-            format: 'POSTGRESQL'
-            
+
       - name: customers
-        external:
-          location: "SELECT * FROM public.customers"
-          
+        description: "Customers table"
+
       - name: products
-        external:
-          location: "SELECT * FROM public.products"
-          
+        description: "Products table"
+
       - name: product_category_name_translation
-        external:
-          location: "SELECT * FROM public.product_category_name_translation"
-          
+        description: "Product category translations"
+
       - name: payments
-        external:
-          location: "SELECT * FROM public.payments"
-          
+        description: "Order payments table"
+
       - name: reviews
-        external:
-          location: "SELECT * FROM public.reviews"
-          
+        description: "Order reviews table"
+
       - name: sellers
-        external:
-          location: "SELECT * FROM public.sellers"
-          
+        description: "Sellers table"
+        
       - name: geolocation
-        external:
-          location: "SELECT * FROM public.geolocation"
+        description: "Geolocation data for sellers"

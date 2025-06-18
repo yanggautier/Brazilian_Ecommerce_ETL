@@ -114,7 +114,7 @@ commit;
 ```
 5. Create a connection use PostgreSQL connector and Snowflake connector and sync data to Snowflake, if you want just sync on time chose `Manuel` then run `docker-compose down` in `./airbyte` folder
 
-![Airbyte sync](airbyte.png)
+![Airbyte sync](images/airbyte.png)
 
 ## Output configurations 
 1. Create or use an existing account Snowflake
