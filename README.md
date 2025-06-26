@@ -8,7 +8,7 @@
 
 Test source files: https://www.kaggle.com/datasets/burayamail/brazilian-ecommerce-analyses-v2/data, you can use your own files, because this dataset has many problems: such as order_id incorrect in the order_times csv, etc ...
 
-## Architecture du système
+## Architecture
 GCS(CSV files) ----> Cloud SQL PostgreSQL ----> in Collecte (Dagster)  ----> Snowflake (Stockage)  ---->  dbt (Transform) ----> Superset (BI/Viz) 
 
 
